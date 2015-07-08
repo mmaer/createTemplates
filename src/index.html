@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>createTemplates</title>
+	<link rel="stylesheet" type="text/css" href="app/css/bootstrap.min.css">
+	<script type="text/javascript" src="app/js/fabric.min.js"></script>
+	
+	<style type="text/css">
+		#createtemplate {
+			border: 1px solid black;
+		}
+
+		.cont-setting {
+			margin-bottom: 15px;
+		}
+
+	</style>
+
+</head>
+<body>
+
+
+<nav class="navbar navbar-inverse">
+	<div class="container">
+		<div class="navbar-header">
+			<a href="#" class="navbar-brand">createTemplates</a>
+		</div>
+		<ul class="nav navbar-nav navbar-right">
+			<li><a href="">Generuj Templejt</a></li>
+			<li><a href="">Twoje Templejty</a></li>
+		</ul>
+	</div>
+</nav>	
+
+
+<div class="container cont-setting">
+
+	<div class="page-header">
+		<h1>Ustawienia canvas <small>opcje zaznaczone gwiazdką są wymagane</small></h1>
+	</div>
+
+	<div class="row">
+		<div class="col-md-3">
+			<div class="form-group">
+			    <label for="exampleInputFile">*Wybiersz folder z obrazkami</label>
+			    <input type="file" id="exampleInputFile">
+			    <p class="help-block">Podaj folder w którym znajdują się obrazki które zostaną wygenerowane</p>
+			</div>
+			
+			<div class="form-group">
+			    <label for="exampleInputEmail1">Podaj wysokość szablonu</label>
+			    <input type="number" class="form-control" id="exampleInputEmail1" placeholder="Email">
+			</div>
+		</div>
+		<div class="col-md-3">
+			<div class="form-group">
+			    <label for="exampleInputFile">*Wybiersz szablon</label>
+			    <input type="file" id="exampleInputFile">
+			    <p class="help-block">Wybiersz szablon na którym mają generować się obrazki</p>
+			</div>
+
+			<div class="form-group">
+			    <label for="exampleInputEmail1">Podaj odległość od górnej krawędzi canvasu</label>
+			    <input type="number" class="form-control" id="exampleInputEmail1" placeholder="Email">
+			</div>
+		</div>
+		<div class="col-md-3">
+			<div class="form-group">
+			    <label for="exampleInputEmail1">Licznik numerowania</label>
+			    <div class="input-group">
+					<span class="input-group-addon">
+						<input type="checkbox" aria-label="countnumber">
+					</span>
+					<input type="number" class="form-control" aria-label="countnumber" placeholder="Podaj liczbę od której ma zacząć numerować szablony">
+				</div>
+			</div>
+
+			<div class="form-group">
+			    <label for="exampleInputEmail1">Podaj odległość od lewej krawędzi canvas</label>
+			    <input type="number" class="form-control" id="exampleInputEmail1" placeholder="Email">
+			</div>
+		</div>
+		<div class="col-md-3">
+			<div class="form-group">
+			    <label for="exampleInputEmail1">Podaj szerokość szablonu</label>
+			    <input type="number" class="form-control" id="exampleInputEmail1" placeholder="Email">
+			</div>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-12">
+			<div class="center-block">
+				<button type="button" class="btn btn-success">Generuj templaty</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="container">
+	<canvas id="createtemplate"></canvas>
+</div>
+
+<script type="text/javascript" src="app/js/app.js"></script>
+</body>
+</html>
