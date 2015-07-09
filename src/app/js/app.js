@@ -67,8 +67,10 @@ CT = {
 	},
 
 	setHeightTemplate: function (heightTemplate) {
-		console.log(CT.canvas);
-		CT.border.height = parseInt(heightTemplate.value);
+		//console.log(CT.canvas.item);
+		//CT.border.height = parseInt(heightTemplate.value);
+		CT.border.setHeight(parseInt(heightTemplate.value, 10)).setCoords();
+		CT.canvas.renderAll.bind(CT.canvas)
 	},
 
 	setWidthTemplate: function (widthTemplate) {
