@@ -27,8 +27,8 @@
 			<a href="#" class="navbar-brand">createTemplates</a>
 		</div>
 		<ul class="nav navbar-nav navbar-right">
-			<li><a href="">Generuj Templejt</a></li>
-			<li><a href="">Twoje Templejty</a></li>
+			<li><a href="index.html">Generuj Templejt</a></li>
+			<li><a href="yourtemplates.html">Twoje Templejty</a></li>
 		</ul>
 	</div>
 </nav>	
@@ -50,13 +50,13 @@
 			
 			<div class="form-group">
 			    <label for="exampleInputEmail1">Podaj wysokość szablonu</label>
-			    <input type="number" class="form-control" id="exampleInputEmail1" placeholder="Email">
+			    <input type="number" class="form-control" id="heighttemplate" placeholder="Email">
 			</div>
 		</div>
 		<div class="col-md-3">
 			<div class="form-group">
 			    <label for="exampleInputFile">*Wybiersz szablon</label>
-			    <input type="file" id="exampleInputFile">
+			    <input type="file" id="filetemplate">
 			    <p class="help-block">Wybiersz szablon na którym mają generować się obrazki</p>
 			</div>
 
@@ -72,7 +72,7 @@
 					<span class="input-group-addon">
 						<input type="checkbox" aria-label="countnumber">
 					</span>
-					<input type="number" class="form-control" aria-label="countnumber" placeholder="Podaj liczbę od której ma zacząć numerować szablony">
+					<input type="number" id="counternumber" class="form-control" aria-label="countnumber" placeholder="Podaj liczbę od której ma zacząć numerować szablony">
 				</div>
 			</div>
 
@@ -102,5 +102,22 @@
 </div>
 
 <script type="text/javascript" src="app/js/app.js"></script>
+
+<script type="text/javascript">
+	
+var counterNumber = document.getElementById("counternumber");
+var fileTemplate = document.getElementById("filetemplate");
+var heightTemplate = document.getElementById("heighttemplate");
+
+counterNumber.addEventListener("change", CT.setCounter, 'false');
+fileTemplate.addEventListener("change", CT.addTemplateImage, 'false');
+heightTemplate.addEventListener("change", function () { CT.setHeightTemplate(heightTemplate);}, 'false');
+
+
+
+CT.init();
+
+</script>
+
 </body>
 </html>
