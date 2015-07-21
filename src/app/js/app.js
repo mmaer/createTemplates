@@ -7,31 +7,21 @@ CT = {
 	canvas: new fabric.Canvas('createtemplate'),
 	counterFlag: false,
 	startNumber: 0,
+	heightCanvas: 0,
+	widthCanvas: 0,
 	heightTemplate: 0,
 	widthTemplate: 0,
 	marginTop: 0,
 	marginLeft: 0,
-	border: null,
+
+	folderImages: null,
+
+	overcanvas: document.getElementById('overcanvas'),
 
 	init: function () {
-
-		/*if (typeof border !== 'object') {
-			console.log("aa");
-
-			var border = new fabric.Rect({
-				fill: 'rgba(0,255,0,0.0)',
-				top: 1, 
-				left: 1, 
-				height: 100, 
-				width: 100,
-				stroke: 'red'
-			});
-
-			CT.canvas.add(border);
-
-			CT.border = border;*/
-		} 
-
+		this.heightCanvas = this.canvas.height;
+		this.widthCanvas = this.canvas.width;
+		this.overcanvas.style.top = -this.heightCanvas + "px";
 	},
 
 	addEventListener: function () {
@@ -39,8 +29,9 @@ CT = {
 
 	},
 
-	addFolderImages: function () {
-
+	addFolderImages: function (e) {
+		console.log(e.target.files);
+		this.folderImages = e;
 	},
 
 	addTemplateImage: function (e) {
@@ -61,10 +52,11 @@ CT = {
                 CT.canvas.setWidth(image.width);
     			CT.canvas.setHeight(image.height);
                 CT.canvas.setOverlayImage(image, CT.canvas.renderAll.bind(CT.canvas));
+                CT.init();
             }
         }
-        reader.readAsDataURL(e.target.files[0]);
-        CT.border.bringToFront();
+
+        reader.readAsDataURL(e.target.files[0]);        
 	},
 
 	setCounter: function (startNumber) {
@@ -74,10 +66,11 @@ CT = {
 	setHeightTemplate: function (heightTemplate) {
 
 		var height = parseInt(heightTemplate.value, 10);
+
 		this.heightTemplate = height;
 
-		CT.border.setHeight(height).setCoords();
-		CT.canvas.renderAll()
+		this.overcanvas.style.height = height + "px";
+		this.overcanvas.style.top += height + "px";
 	},
 
 	setWidthTemplate: function (widthTemplate) {
@@ -85,26 +78,26 @@ CT = {
 		var width = parseInt(widthTemplate.value, 10);
 		this.widthTemplate = width;
 		
-		CT.border.setWidth(width).setCoords();
-		CT.canvas.renderAll()
+		this.overcanvas.style.width = width + "px";
 	},
 
 	setMarginTop: function (marginTop) {
 
-		var top = parseInt(marginTop.value, 10);
+		var top = parseInt(marginTop.value, 10),
+			margin = -this.heightCanvas + top;
+
 		this.marginTop = top;
-		
-		CT.border.setTop(top).setCoords();
-		CT.canvas.renderAll()
+
+		this.overcanvas.style.top = margin + "px";
 	},
 
 	setMarginLeft: function (marginLeft) {
 
 		var left = parseInt(marginLeft.value, 10);
+
 		this.marginLeft = left;
-		
-		CT.border.setLeft(left).setCoords();
-		CT.canvas.renderAll()
+	
+		this.overcanvas.style.left = left + "px";
 	}
 
 };
