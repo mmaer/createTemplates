@@ -15,17 +15,21 @@ CT = {
 
 	init: function () {
 
-		if (typeof border !== 'object') {
+		/*if (typeof border !== 'object') {
 			console.log("aa");
 
-			CT.border = CT.canvas.add(new fabric.Rect({
+			var border = new fabric.Rect({
 				fill: 'rgba(0,255,0,0.0)',
 				top: 1, 
 				left: 1, 
 				height: 100, 
 				width: 100,
 				stroke: 'red'
-			}));
+			});
+
+			CT.canvas.add(border);
+
+			CT.border = border;*/
 		} 
 
 	},
@@ -60,6 +64,7 @@ CT = {
             }
         }
         reader.readAsDataURL(e.target.files[0]);
+        CT.border.bringToFront();
 	},
 
 	setCounter: function (startNumber) {
@@ -67,22 +72,39 @@ CT = {
 	},
 
 	setHeightTemplate: function (heightTemplate) {
-		//console.log(CT.canvas.item);
-		//CT.border.height = parseInt(heightTemplate.value);
-		CT.border.setHeight(parseInt(heightTemplate.value, 10)).setCoords();
-		CT.canvas.renderAll.bind(CT.canvas)
+
+		var height = parseInt(heightTemplate.value, 10);
+		this.heightTemplate = height;
+
+		CT.border.setHeight(height).setCoords();
+		CT.canvas.renderAll()
 	},
 
 	setWidthTemplate: function (widthTemplate) {
 
+		var width = parseInt(widthTemplate.value, 10);
+		this.widthTemplate = width;
+		
+		CT.border.setWidth(width).setCoords();
+		CT.canvas.renderAll()
 	},
 
 	setMarginTop: function (marginTop) {
 
+		var top = parseInt(marginTop.value, 10);
+		this.marginTop = top;
+		
+		CT.border.setTop(top).setCoords();
+		CT.canvas.renderAll()
 	},
 
 	setMarginLeft: function (marginLeft) {
 
+		var left = parseInt(marginLeft.value, 10);
+		this.marginLeft = left;
+		
+		CT.border.setLeft(left).setCoords();
+		CT.canvas.renderAll()
 	}
 
 };

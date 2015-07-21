@@ -15,6 +15,16 @@
 			margin-bottom: 15px;
 		}
 
+		#overcanvas {
+			border: 1px solid red;
+			height: 0px;
+			width: 0px;
+			z-index: 1;
+			position: relative;
+			top: 0;
+			left: 0;
+		}
+
 	</style>
 
 </head>
@@ -62,7 +72,7 @@
 
 			<div class="form-group">
 			    <label for="exampleInputEmail1">Podaj odległość od górnej krawędzi canvasu</label>
-			    <input type="number" class="form-control" id="exampleInputEmail1" placeholder="Email">
+			    <input type="number" class="form-control" id="margintop" placeholder="Email">
 			</div>
 		</div>
 		<div class="col-md-3">
@@ -78,13 +88,13 @@
 
 			<div class="form-group">
 			    <label for="exampleInputEmail1">Podaj odległość od lewej krawędzi canvas</label>
-			    <input type="number" class="form-control" id="exampleInputEmail1" placeholder="Email">
+			    <input type="number" class="form-control" id="marginleft" placeholder="Email">
 			</div>
 		</div>
 		<div class="col-md-3">
 			<div class="form-group">
 			    <label for="exampleInputEmail1">Podaj szerokość szablonu</label>
-			    <input type="number" class="form-control" id="exampleInputEmail1" placeholder="Email">
+			    <input type="number" class="form-control" id="widthtemplate" placeholder="Email">
 			</div>
 		</div>
 	</div>
@@ -98,6 +108,7 @@
 </div>
 
 <div class="container">
+	<div id="overcanvas"></div>
 	<canvas id="createtemplate"></canvas>
 </div>
 
@@ -108,12 +119,20 @@
 var counterNumber = document.getElementById("counternumber");
 var fileTemplate = document.getElementById("filetemplate");
 var heightTemplate = document.getElementById("heighttemplate");
+var widthTemplate = document.getElementById("widthtemplate");
+
+var marginTop = document.getElementById("margintop");
+var marginLeft = document.getElementById("marginleft");
+
 
 counterNumber.addEventListener("change", CT.setCounter, 'false');
 fileTemplate.addEventListener("change", CT.addTemplateImage, 'false');
+
 heightTemplate.addEventListener("change", function () { CT.setHeightTemplate(heightTemplate);}, 'false');
+widthTemplate.addEventListener("change", function () { CT.setWidthTemplate(widthTemplate);}, 'false');
 
-
+marginTop.addEventListener("change", function () { CT.setMarginTop(marginTop);}, 'false');
+marginLeft.addEventListener("change", function () { CT.setMarginLeft(marginLeft);}, 'false');
 
 CT.init();
 
