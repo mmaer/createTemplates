@@ -52,16 +52,16 @@
 
 	<div class="row">
 		<div class="col-md-3">
-			<div class="form-group">
+			 <div class="form-group">
 			    <label for="exampleInputFile">*Wybiersz folder z obrazkami</label>
-			    <input type="file" id="folderupload" webkitdirectory mozdirectory msdirectory odirectory directory multiple />
+			    <input type="file" id="folderupload" name="my_file[]" webkitdirectory mozdirectory msdirectory odirectory directory multiple/>
 			    <p class="help-block">Podaj folder w którym znajdują się obrazki które zostaną wygenerowane</p>
 			</div>
-			
+		
 			<div class="form-group">
 			    <label for="exampleInputEmail1">Podaj wysokość szablonu</label>
-			    <input type="number" class="form-control" id="heighttemplate" placeholder="Podaj wysokość szablonu">
-			</div>
+			    <input type="number" class="form-control" id="heighttemplate" laceholder="Podaj wysokość szablonu">
+			</div> 
 		</div>
 		<div class="col-md-3">
 			<div class="form-group">
@@ -99,9 +99,12 @@
 		</div>
 	</div>
 	<div class="row">
+		<div class="alert" id="status"></div>
+	</div>
+	<div class="row">
 		<div class="col-md-12">
 			<div class="center-block">
-				<button type="button" class="btn btn-success">Generuj templaty</button>
+				<button type="button" class="btn btn-success" id="generatetemplate">Generuj templaty</button>
 			</div>
 		</div>
 	</div>
@@ -117,14 +120,16 @@
 
 <script type="text/javascript">
 	
-var counterNumber = document.getElementById("counternumber");
-var fileTemplate = document.getElementById("filetemplate");
-var folderUpload = document.getElementById("folderupload");
-var heightTemplate = document.getElementById("heighttemplate");
-var widthTemplate = document.getElementById("widthtemplate");
+var counterNumber = document.querySelector("#counternumber");
+var fileTemplate = document.querySelector("#filetemplate");
+var folderUpload = document.querySelector("#folderupload");
+var heightTemplate = document.querySelector("#heighttemplate");
+var widthTemplate = document.querySelector("#widthtemplate");
 
-var marginTop = document.getElementById("margintop");
-var marginLeft = document.getElementById("marginleft");
+var marginTop = document.querySelector("#margintop");
+var marginLeft = document.querySelector("#marginleft");
+
+var generateTemplateButton = document.querySelector("#generatetemplate");
 
 
 counterNumber.addEventListener("change", CT.setCounter, 'false');
@@ -137,7 +142,7 @@ widthTemplate.addEventListener("change", function () { CT.setWidthTemplate(width
 marginTop.addEventListener("change", function () { CT.setMarginTop(marginTop);}, 'false');
 marginLeft.addEventListener("change", function () { CT.setMarginLeft(marginLeft);}, 'false');
 
-CT.init();
+generateTemplateButton.addEventListener("click", CT.generateTemplate, 'false');
 
 </script>
 
