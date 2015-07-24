@@ -164,7 +164,33 @@ CT = {
 
 	addImageToCanvas: function (src) {
 
-		var oImg,
+		var reader = new FileReader();
+
+		reader.onload = function () {
+			var imgObj = new Image();
+			imgObj.src = reader.result;
+
+			imgObj.onload = function () {
+
+				console.log(this.marginTop);
+
+				var image = new fabric.Image(imgObj);
+				image.set({
+					left: this.marginLeft,
+					top: this.marginTop,
+					height: this.heightTemplate,
+					width: this.widthTemplate
+				});
+
+				CT.canvas.add(image);
+			}.bind(this);
+
+		}.bind(this);
+		reader.readAsDataURL(CT.images[0]);
+
+
+
+		/*var oImg,
 			top;
 		var reader = new FileReader(),
             img = new Image();
@@ -173,9 +199,19 @@ CT = {
             img.src = reader.result;
         }
 
+        //console.log(reader.readAsDataURL(CT.images[0]));
+
         reader.readAsDataURL(CT.images[0]);
 
-        CT.canvas.add(img);
+        console.log(img)
+        var image = new fabric.Image(img);
+        image.set({
+                left: 0,
+                top: 0
+            });
+        
+       CT.canvas.add(image);
+       CT.canvas.renderAll();
 
 		fabric.Image.fromURL(src, function (img) {
 
@@ -186,7 +222,7 @@ CT = {
 
 			CT.canvas.add(oImg);
 
-		});
+		});*/
 
 	},
 
@@ -198,12 +234,37 @@ CT = {
 
 		if (this.filesAdded == 0) return;
 
-		CT.addImageToCanvas()
+		CT.addImageToCanvas();
 
 
 	},
 
 	init: function () {
+
+		var counterNumber = document.querySelector("#counternumber");
+		var fileTemplate = document.querySelector("#filetemplate");
+		var folderUpload = document.querySelector("#folderupload");
+		var heightTemplate = document.querySelector("#heighttemplate");
+		var widthTemplate = document.querySelector("#widthtemplate");
+
+		var marginTop = document.querySelector("#margintop");
+		var marginLeft = document.querySelector("#marginleft");
+
+		var generateTemplateButton = document.querySelector("#generatetemplate");
+
+
+		counterNumber.addEventListener("change", CT.setCounter, 'false');
+		fileTemplate.addEventListener("change", CT.addTemplateImage, 'false');
+		folderUpload.addEventListener("change", function () { CT.addFolderImages(event)}, 'false');
+
+		heightTemplate.addEventListener("change", function () { CT.setHeightTemplate(heightTemplate);}, 'false');
+		widthTemplate.addEventListener("change", function () { CT.setWidthTemplate(widthTemplate);}, 'false');
+
+		marginTop.addEventListener("change", function () { CT.setMarginTop(marginTop);}, 'false');
+		marginLeft.addEventListener("change", function () { CT.setMarginLeft(marginLeft);}, 'false');
+
+		generateTemplateButton.addEventListener("click", CT.generateTemplate, 'false');
+
 
 		this.heightCanvas = this.canvas.height;
 		this.widthCanvas = this.canvas.width;

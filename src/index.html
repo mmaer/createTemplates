@@ -118,33 +118,5 @@
 
 <script type="text/javascript" src="app/js/app.js"></script>
 
-<script type="text/javascript">
-	
-var counterNumber = document.querySelector("#counternumber");
-var fileTemplate = document.querySelector("#filetemplate");
-var folderUpload = document.querySelector("#folderupload");
-var heightTemplate = document.querySelector("#heighttemplate");
-var widthTemplate = document.querySelector("#widthtemplate");
-
-var marginTop = document.querySelector("#margintop");
-var marginLeft = document.querySelector("#marginleft");
-
-var generateTemplateButton = document.querySelector("#generatetemplate");
-
-
-counterNumber.addEventListener("change", CT.setCounter, 'false');
-fileTemplate.addEventListener("change", CT.addTemplateImage, 'false');
-folderUpload.addEventListener("change", function () { CT.addFolderImages(event)}, 'false');
-
-heightTemplate.addEventListener("change", function () { CT.setHeightTemplate(heightTemplate);}, 'false');
-widthTemplate.addEventListener("change", function () { CT.setWidthTemplate(widthTemplate);}, 'false');
-
-marginTop.addEventListener("change", function () { CT.setMarginTop(marginTop);}, 'false');
-marginLeft.addEventListener("change", function () { CT.setMarginLeft(marginLeft);}, 'false');
-
-generateTemplateButton.addEventListener("click", CT.generateTemplate, 'false');
-
-</script>
-
 </body>
 </html>
