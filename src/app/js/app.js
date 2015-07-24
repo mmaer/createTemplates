@@ -15,10 +15,7 @@ CT = {
 	marginLeft: 0,
 
 	folderImages: {},
-	filesAdded: 0,
-	formData: new FormData(),
 
-	images: [],
 	image: null,
 	nameFolder: null,
 
@@ -117,7 +114,7 @@ CT = {
         reader.readAsDataURL(e.target.files[0]);        
 	},
 
-	/*addImageToCanvas: function (image) {
+	addImageToCanvas: function (callback, obj) {
 
 		var reader = new FileReader();
 
@@ -135,15 +132,16 @@ CT = {
 					width: this.widthTemplate
 				});
 
-				CT.canvas.add(image);
+				if (this.canvas.add(image)) {
+					callback.call(obj, null);
+				}
+
 			}.bind(this);
 
 		}.bind(this);
 
 		reader.readAsDataURL(this.image);
-
-		CT.saveTemplate();
-
+	
 	},
 
 	saveTemplate: function () {
@@ -176,113 +174,27 @@ CT = {
                 this.setStatus(true, "Wystąpił błąd!");
             }
 
-        }.bind(this);
-
-        xhr.send(image);
-
-        console.log("aa");
-
-        if (CT.folderImages.length > CT.numberImage)
-        {
-        	console.log("bb");
-        	CT.numberImage++
-        	CT.generateTemplate();
-        }
-	},
-
-	generateTemplate: function () {
-			
-		console.log(CT.numberImage);
-
-		CT.image = CT.folderImages[CT.numberImage];
-
-		CT.addImageToCanvas();
-	},*/
-
-	addImageToCanvas: function (callback, obj) {
-
-		var reader = new FileReader();
-
-		reader.onload = function () {
-			var imgObj = new Image();
-			imgObj.src = reader.result;
-
-			imgObj.onload = function () {
-
-				var image = new fabric.Image(imgObj);
-				image.set({
-					left: this.marginLeft,
-					top: this.marginTop,
-					height: this.heightTemplate,
-					width: this.widthTemplate
-				});
-
-				if(CT.canvas.add(image)) {
-					callback();
-				}
-			}.bind(this);
-
-		}.bind(this);
-
-		reader.readAsDataURL(this.image);
-
-		
-	},
-
-	saveTemplate: function () {
-
-		console.log("aa");
-
-		CT.canvas.deactivateAll().renderAll();
-
-		var image = new FormData();
-
-		var template = CT.canvas.toDataURL ({
-			multiplier: 1,
-			quality: 1,
-			format: 'jpeg',
-			left: CT.marginLeft,
-			top: CT.marginTop,
-			height: CT.heightTemplate,
-			width: CT.widthTemplate
-		});
-
-		image.append("image", template);
-		image.append("nameImage", CT.image.name);
-		image.append("nameFolder", CT.nameFolder);
-
-		var xhr = new XMLHttpRequest();
-
-        xhr.open("POST", "app/saveimage.php", true);
-
-        xhr.onload = function (e) {
-
-            if (e.target.status != 200) {
-                CT.setStatus(true, "Wystąpił błąd!");
-            }
-
         };
 
         xhr.send(image);
 
         xhr.onreadystatechange = function () {
 		    if (xhr.readyState == 4 && xhr.status == 200) {
-		        if (CT.folderImages.length > CT.numberImage)
+		        if (this.folderImages.length > this.numberImage)
 		        {
-		        	CT.numberImage++
-		        	console.log(CT.numberImage);
-		        	CT.generateTemplate();
+		        	this.numberImage++
+		        	this.generateTemplate();
 		        }
 		    }
-		}
+		}.bind(this);
         
 	},
 
 	generateTemplate: function () {	
 
-		CT.image = CT.folderImages[CT.numberImage];
+		this.image = CT.folderImages[this.numberImage];
 
-		CT.addImageToCanvas(CT.saveTemplate, CT);
+		this.addImageToCanvas(CT.saveTemplate, CT);
 	},
 
 	init: function () {
@@ -308,7 +220,7 @@ CT = {
 		marginTop.addEventListener("change", function () { CT.setMarginTop(marginTop);}, 'false');
 		marginLeft.addEventListener("change", function () { CT.setMarginLeft(marginLeft);}, 'false');
 
-		generateTemplateButton.addEventListener("click", CT.generateTemplate, 'false');
+		generateTemplateButton.addEventListener("click", this.generateTemplate.bind(this), 'false');
 
 		this.heightCanvas = this.canvas.height;
 		this.widthCanvas = this.canvas.width;
