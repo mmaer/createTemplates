@@ -17,6 +17,7 @@ CT = {
 	folderImages: {},
 
 	image: null,
+	typeImage: 'jpeg',
 	nameFolder: null,
 
 	numberImage: 0,
@@ -95,7 +96,6 @@ CT = {
 
 		reader.onprogress = function (evt) {
             percentComplete = (evt.loaded / evt.total) * 100;
-            console.log(percentComplete);
         };
 
         reader.onload = function (event) {
@@ -141,19 +141,20 @@ CT = {
 		}.bind(this);
 
 		reader.readAsDataURL(this.image);
-	
 	},
 
 	saveTemplate: function () {
 
+		var image = new FormData(),
+			template,
+			xhr;
+
 		this.canvas.deactivateAll().renderAll();
 
-		var image = new FormData();
-
-		var template = this.canvas.toDataURL ({
+		template = this.canvas.toDataURL ({
 			multiplier: 1,
 			quality: 1,
-			format: 'jpeg',
+			format: this.typeImage,
 			left: this.marginLeft,
 			top: this.marginTop,
 			height: this.heightTemplate,
@@ -164,7 +165,7 @@ CT = {
 		image.append("nameImage", this.image.name);
 		image.append("nameFolder", this.nameFolder);
 
-		var xhr = new XMLHttpRequest();
+		xhr = new XMLHttpRequest();
 
         xhr.open("POST", "app/saveimage.php", true);
 
@@ -173,7 +174,6 @@ CT = {
             if (e.target.status != 200) {
                 this.setStatus(true, "Wystąpił błąd!");
             }
-
         };
 
         xhr.send(image);
@@ -187,13 +187,11 @@ CT = {
 		        }
 		    }
 		}.bind(this);
-        
 	},
 
 	generateTemplate: function () {	
 
 		this.image = CT.folderImages[this.numberImage];
-
 		this.addImageToCanvas(CT.saveTemplate, CT);
 	},
 
