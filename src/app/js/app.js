@@ -14,11 +14,15 @@ CT = {
 	marginTop: 0,
 	marginLeft: 0,
 
-	folderImages: null,
+	folderImages: {},
 	filesAdded: 0,
 	formData: new FormData(),
 
 	images: [],
+	image: null,
+	nameFolder: null,
+
+	numberImage: 0,
 
 	status: document.querySelector("#status"),
 
@@ -39,6 +43,8 @@ CT = {
 	setCounter: function (startNumber) {
 
 	},
+
+	/***** SET WIDTH, HEIGHT, TOP AND LEFT *****/
 
 	setHeightTemplate: function (heightTemplate) {
 
@@ -74,31 +80,13 @@ CT = {
 		this.overcanvas.style.left = left + "px";
 	},
 
-	addEventListener: function () {
-	},
-
 	addFolderImages: function (e) {
 
+		var folder;
+
 		this.folderImages = e.target.files;
-
-		[].forEach.call(this.folderImages, function (file) {
-			this.addToUploadList(file);
-			this.addImages(file);
-		}.bind(this));
-
-	},
-
-	addImages: function (file) {
-
-		this.images.push(file);
-
-	},
-
-	addToUploadList: function (file) {
-
-		this.formData.append("images[]", file);
-		this.filesAdded++;
-
+		folder = this.folderImages[0].webkitRelativePath.split("/");
+		this.nameFolder = folder[0];
 	},
 
 	addTemplateImage: function (e) {
@@ -116,7 +104,7 @@ CT = {
         reader.onload = function (event) {
             imgObj = new Image();
             imgObj.src = event.target.result;
-            imgObj.onload = function() {
+            imgObj.onload = function () {
 
                 image = new fabric.Image(imgObj);
                 CT.canvas.setWidth(image.width);
@@ -129,26 +117,7 @@ CT = {
         reader.readAsDataURL(e.target.files[0]);        
 	},
 
-	sendFiles: function () {
-
-		if (this.filesAdded == 0) return;
-
-        var xhr = new XMLHttpRequest();
-
-        var xhr.open("POST", "app/image_uploader.php", true);
-
-        xhr.onload = function (e) {
-
-            if (e.target.status != 200) {
-                this.setStatus(true, "Wystąpił błąd!");
-            }
-
-        }.bind(this);
-
-        xhr.send(this.formData);
-	},
-
-	addImageToCanvas: function (src) {
+	/*addImageToCanvas: function (image) {
 
 		var reader = new FileReader();
 
@@ -170,7 +139,8 @@ CT = {
 			}.bind(this);
 
 		}.bind(this);
-		reader.readAsDataURL(CT.images[0]);
+
+		reader.readAsDataURL(this.image);
 
 		CT.saveTemplate();
 
@@ -193,6 +163,8 @@ CT = {
 		});
 
 		image.append("image", template);
+		image.append("nameImage", this.image.name);
+		image.append("nameFolder", this.nameFolder);
 
 		var xhr = new XMLHttpRequest();
 
@@ -208,13 +180,102 @@ CT = {
 
         xhr.send(image);
 
+        console.log("aa");
+
+        if (CT.folderImages.length > CT.numberImage)
+        {
+        	console.log("bb");
+        	CT.numberImage++
+        	CT.generateTemplate();
+        }
 	},
 
 	generateTemplate: function () {
+			
+		console.log(CT.numberImage);
 
-		if (this.filesAdded == 0) return;
+		CT.image = CT.folderImages[CT.numberImage];
 
 		CT.addImageToCanvas();
+	},*/
+
+	addImageToCanvas: function (callback) {
+
+		var reader = new FileReader();
+
+		reader.onload = function () {
+			var imgObj = new Image();
+			imgObj.src = reader.result;
+
+			imgObj.onload = function () {
+
+				var image = new fabric.Image(imgObj);
+				image.set({
+					left: this.marginLeft,
+					top: this.marginTop,
+					height: this.heightTemplate,
+					width: this.widthTemplate
+				});
+
+				CT.canvas.add(image);
+			}.bind(this);
+
+		}.bind(this);
+
+		reader.readAsDataURL(this.image);
+
+		callback();
+	},
+
+	saveTemplate: function () {
+
+		CT.canvas.deactivateAll().renderAll();
+
+		var image = new FormData();
+
+		var template = CT.canvas.toDataURL ({
+			multiplier: 1,
+			quality: 1,
+			format: 'jpeg',
+			left: CT.marginLeft,
+			top: CT.marginTop,
+			height: CT.heightTemplate,
+			width: CT.widthTemplate
+		});
+
+		image.append("image", template);
+		image.append("nameImage", CT.image.name);
+		image.append("nameFolder", CT.nameFolder);
+
+		var xhr = new XMLHttpRequest();
+
+        xhr.open("POST", "app/saveimage.php", true);
+
+        xhr.onload = function (e) {
+
+            if (e.target.status != 200) {
+                CT.setStatus(true, "Wystąpił błąd!");
+            }
+
+        };
+
+        xhr.send(image);
+
+        console.log("aa");
+
+        if (CT.folderImages.length > CT.numberImage)
+        {
+        	console.log("bb");
+        	CT.numberImage++
+        	CT.generateTemplate();
+        }
+	},
+
+	generateTemplate: function () {	
+
+		CT.image = CT.folderImages[CT.numberImage];
+
+		CT.addImageToCanvas(CT.saveTemplate);
 	},
 
 	init: function () {
@@ -241,7 +302,6 @@ CT = {
 		marginLeft.addEventListener("change", function () { CT.setMarginLeft(marginLeft);}, 'false');
 
 		generateTemplateButton.addEventListener("click", CT.generateTemplate, 'false');
-
 
 		this.heightCanvas = this.canvas.height;
 		this.widthCanvas = this.canvas.width;
