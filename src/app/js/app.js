@@ -37,9 +37,9 @@ CT = {
         }
 	},
 
-	setCounter: function (startNumber) {
+	/*setCounter: function (startNumber) {
 
-	},
+	},*/
 
 	/***** SET WIDTH, HEIGHT, TOP AND LEFT *****/
 
@@ -96,7 +96,7 @@ CT = {
 		reader.onprogress = function (evt) {
             percentComplete = (evt.loaded / evt.total) * 100;
             console.log(percentComplete);
-        }
+        };
 
         reader.onload = function (event) {
             imgObj = new Image();
@@ -108,8 +108,8 @@ CT = {
     			CT.canvas.setHeight(image.height);
                 CT.canvas.setOverlayImage(image, CT.canvas.renderAll.bind(CT.canvas));
                 CT.init();
-            }
-        }
+            };
+        };
 
         reader.readAsDataURL(e.target.files[0]);        
 	},
@@ -182,7 +182,7 @@ CT = {
 		    if (xhr.readyState == 4 && xhr.status == 200) {
 		        if (this.folderImages.length > this.numberImage)
 		        {
-		        	this.numberImage++
+		        	this.numberImage++;
 		        	this.generateTemplate();
 		        }
 		    }
@@ -212,7 +212,7 @@ CT = {
 
 		counterNumber.addEventListener("change", CT.setCounter, 'false');
 		fileTemplate.addEventListener("change", CT.addTemplateImage, 'false');
-		folderUpload.addEventListener("change", function () { CT.addFolderImages(event)}, 'false');
+		folderUpload.addEventListener("change", function () { CT.addFolderImages(event);}, 'false');
 
 		heightTemplate.addEventListener("change", function () { CT.setHeightTemplate(heightTemplate);}, 'false');
 		widthTemplate.addEventListener("change", function () { CT.setWidthTemplate(widthTemplate);}, 'false');
