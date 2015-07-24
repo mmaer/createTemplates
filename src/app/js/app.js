@@ -199,7 +199,7 @@ CT = {
 		CT.addImageToCanvas();
 	},*/
 
-	addImageToCanvas: function (callback) {
+	addImageToCanvas: function (callback, obj) {
 
 		var reader = new FileReader();
 
@@ -217,17 +217,21 @@ CT = {
 					width: this.widthTemplate
 				});
 
-				CT.canvas.add(image);
+				if(CT.canvas.add(image)) {
+					callback();
+				}
 			}.bind(this);
 
 		}.bind(this);
 
 		reader.readAsDataURL(this.image);
 
-		callback();
+		
 	},
 
 	saveTemplate: function () {
+
+		console.log("aa");
 
 		CT.canvas.deactivateAll().renderAll();
 
@@ -261,21 +265,24 @@ CT = {
 
         xhr.send(image);
 
-        console.log("aa");
-
-        if (CT.folderImages.length > CT.numberImage)
-        {
-        	console.log("bb");
-        	CT.numberImage++
-        	CT.generateTemplate();
-        }
+        xhr.onreadystatechange = function () {
+		    if (xhr.readyState == 4 && xhr.status == 200) {
+		        if (CT.folderImages.length > CT.numberImage)
+		        {
+		        	CT.numberImage++
+		        	console.log(CT.numberImage);
+		        	CT.generateTemplate();
+		        }
+		    }
+		}
+        
 	},
 
 	generateTemplate: function () {	
 
 		CT.image = CT.folderImages[CT.numberImage];
 
-		CT.addImageToCanvas(CT.saveTemplate);
+		CT.addImageToCanvas(CT.saveTemplate, CT);
 	},
 
 	init: function () {

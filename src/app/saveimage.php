@@ -18,6 +18,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_FILES)) {
 
 	    file_put_contents('templates/'.$nameImagesFolder.'/'.$nameImage, base64_decode($image[1]));
 
+	    return true;
+
 	}
 }
 
