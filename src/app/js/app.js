@@ -45,7 +45,6 @@ CT = {
 		var height = parseInt(heightTemplate.value, 10);
 
 		this.heightTemplate = height;
-
 		this.overcanvas.style.height = height + "px";
 		this.overcanvas.style.top += height + "px";
 	},
@@ -53,8 +52,8 @@ CT = {
 	setWidthTemplate: function (widthTemplate) {
 
 		var width = parseInt(widthTemplate.value, 10);
-		this.widthTemplate = width;
 		
+		this.widthTemplate = width;
 		this.overcanvas.style.width = width + "px";
 	},
 
@@ -64,7 +63,6 @@ CT = {
 			margin = -this.heightCanvas + top;
 
 		this.marginTop = top;
-
 		this.overcanvas.style.top = margin + "px";
 	},
 
@@ -73,7 +71,6 @@ CT = {
 		var left = parseInt(marginLeft.value, 10);
 
 		this.marginLeft = left;
-	
 		this.overcanvas.style.left = left + "px";
 	},
 
@@ -134,17 +131,11 @@ CT = {
 
 	sendFiles: function () {
 
-		var xhr,
-			responseObject;
-
 		if (this.filesAdded == 0) return;
 
-		//this.sendButton.onclick = null;
-        //this.sendButton.setAttribute("disabled", "disabled");
+        var xhr = new XMLHttpRequest();
 
-        xhr = new XMLHttpRequest();
-
-        xhr.open("POST", "app/image_uploader.php", true);
+        var xhr.open("POST", "app/image_uploader.php", true);
 
         xhr.onload = function (e) {
 
@@ -152,12 +143,7 @@ CT = {
                 this.setStatus(true, "Wystąpił błąd!");
             }
 
-            //responseObject = JSON.parse(e.target.responseText);
-            //this.setStatus(responseObject.error, responseObject.message);
-
         }.bind(this);
-
-        //xhr.onprogress = this.updateProgress.bind(this);
 
         xhr.send(this.formData);
 	},
@@ -171,8 +157,6 @@ CT = {
 			imgObj.src = reader.result;
 
 			imgObj.onload = function () {
-
-				console.log(this.marginTop);
 
 				var image = new fabric.Image(imgObj);
 				image.set({
@@ -188,55 +172,49 @@ CT = {
 		}.bind(this);
 		reader.readAsDataURL(CT.images[0]);
 
+		CT.saveTemplate();
 
+	},
 
-		/*var oImg,
-			top;
-		var reader = new FileReader(),
-            img = new Image();
+	saveTemplate: function () {
 
-        reader.onload = function() {
-            img.src = reader.result;
-        }
+		this.canvas.deactivateAll().renderAll();
 
-        //console.log(reader.readAsDataURL(CT.images[0]));
+		var image = new FormData();
 
-        reader.readAsDataURL(CT.images[0]);
+		var template = this.canvas.toDataURL ({
+			multiplier: 1,
+			quality: 1,
+			format: 'jpeg',
+			left: this.marginLeft,
+			top: this.marginTop,
+			height: this.heightTemplate,
+			width: this.widthTemplate
+		});
 
-        console.log(img)
-        var image = new fabric.Image(img);
-        image.set({
-                left: 0,
-                top: 0
-            });
-        
-       CT.canvas.add(image);
-       CT.canvas.renderAll();
+		image.append("image", template);
 
-		fabric.Image.fromURL(src, function (img) {
+		var xhr = new XMLHttpRequest();
 
-			oImg = img.set({
-				left: 0,
-				top: 0
-			});
+        xhr.open("POST", "app/saveimage.php", true);
 
-			CT.canvas.add(oImg);
+        xhr.onload = function (e) {
 
-		});*/
+            if (e.target.status != 200) {
+                this.setStatus(true, "Wystąpił błąd!");
+            }
+
+        }.bind(this);
+
+        xhr.send(image);
 
 	},
 
 	generateTemplate: function () {
 
-		//CT.sendFiles();
-
-		//console.log(this.formData.get());
-
 		if (this.filesAdded == 0) return;
 
 		CT.addImageToCanvas();
-
-
 	},
 
 	init: function () {
@@ -251,7 +229,6 @@ CT = {
 		var marginLeft = document.querySelector("#marginleft");
 
 		var generateTemplateButton = document.querySelector("#generatetemplate");
-
 
 		counterNumber.addEventListener("change", CT.setCounter, 'false');
 		fileTemplate.addEventListener("change", CT.addTemplateImage, 'false');
