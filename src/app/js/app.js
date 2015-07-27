@@ -4,8 +4,8 @@ var CT = CT || {};
 
 CT = {
 
+	/*** CANVAS ***/
 	canvas: new fabric.Canvas('createtemplate'),
-	counterFlag: false,
 	startNumber: 0,
 	heightCanvas: 0,
 	widthCanvas: 0,
@@ -13,19 +13,18 @@ CT = {
 	widthTemplate: 0,
 	marginTop: 0,
 	marginLeft: 0,
-
+	
+	/*** FILE & FOLDER ***/
 	folderImages: {},
-
 	image: null,
 	typeImage: 'jpeg',
 	nameFolder: null,
-
 	numberImage: 0,
 
 	status: document.querySelector("#status"),
-
+	counterFlag: false,
 	overcanvas: document.getElementById('overcanvas'),
-
+	
 	setStatus: function (isError, message) {
 
 		this.status.style.display = "block";
