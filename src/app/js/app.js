@@ -48,6 +48,13 @@ CT = {
 		var height = parseInt(heightTemplate.value, 10);
 
 		this.heightTemplate = height;
+
+		if (!this.checkSizeTemplate()) {
+			return this.setStatus(true, "Wysokość szablonu jest za wysoka");
+		} else {
+			this.status.style.display = "none";
+		}
+
 		this.overcanvas.style.height = height + "px";
 		this.overcanvas.style.top += height + "px";
 	},
@@ -57,6 +64,13 @@ CT = {
 		var width = parseInt(widthTemplate.value, 10);
 		
 		this.widthTemplate = width;
+
+		if (!this.checkSizeTemplate()) {
+			return this.setStatus(true, "Szerokość szablonu jest za wysoka");
+		} else {
+			this.status.style.display = "none";
+		}
+
 		this.overcanvas.style.width = width + "px";
 	},
 
@@ -66,6 +80,13 @@ CT = {
 			margin = -this.heightCanvas + top;
 
 		this.marginTop = top;
+
+		if (!this.checkSizeTemplate()) {
+			return this.setStatus(true, "Górny marginesu jest za duży");
+		} else {
+			this.status.style.display = "none";
+		}
+
 		this.overcanvas.style.top = margin + "px";
 	},
 
@@ -73,7 +94,14 @@ CT = {
 
 		var left = parseInt(marginLeft.value, 10);
 
-		this.marginLeft = left;
+		this.marginLeft = left; 
+
+		if (!this.checkSizeTemplate()) {
+			return this.setStatus(true, "Lewy margines jest za duży");
+		} else {
+			this.status.style.display = "none";
+		}
+
 		this.overcanvas.style.left = left + "px";
 	},
 
@@ -83,6 +111,29 @@ CT = {
 
         this.progressStatus.style.width = percentLoaded.toFixed(0) + "%";
         this.progressStatus.innerHTML = percentLoaded.toFixed(0) + "%";
+	},
+
+	checkSizeTemplate: function() {
+
+		var hTemplateMarginTop = this.heightTemplate + this.marginTop,
+			wTemplateMarginLeft = this.widthTemplate + this.marginLeft;
+
+		if (hTemplateMarginTop > this.heightCanvas) {
+			this.generateTemplateButton.onclick = null;
+        	this.generateTemplateButton.setAttribute("disabled", "disabled");
+			return false;
+		}
+
+		if (wTemplateMarginLeft > this.widthCanvas) {
+			this.generateTemplateButton.onclick = null;
+        	this.generateTemplateButton.setAttribute("disabled", "disabled");
+			return false;
+		}
+
+		this.generateTemplateButton.onclick = true;
+        this.generateTemplateButton.removeAttribute("disabled");
+		return true;
+ 
 	},
 
 	addFolderImages: function (e) {
@@ -199,6 +250,10 @@ CT = {
 
 	generateTemplate: function () {	
 
+		if (!this.checkSizeTemplate()) {
+			return false;
+		}
+
 		this.progressStatus.style.display = "block";
 
 		if (typeof CT.folderImages[this.numberImage] != "undefined") {
@@ -221,7 +276,7 @@ CT = {
 		var marginTop = document.querySelector("#margintop");
 		var marginLeft = document.querySelector("#marginleft");
 
-		var generateTemplateButton = document.querySelector("#generatetemplate");
+		this.generateTemplateButton = document.querySelector("#generatetemplate");
 
 		counterNumber.addEventListener("change", CT.setCounter, 'false');
 		fileTemplate.addEventListener("change", CT.addTemplateImage, 'false');
@@ -233,7 +288,7 @@ CT = {
 		marginTop.addEventListener("change", function () { CT.setMarginTop(marginTop);}, 'false');
 		marginLeft.addEventListener("change", function () { CT.setMarginLeft(marginLeft);}, 'false');
 
-		generateTemplateButton.addEventListener("click", this.generateTemplate.bind(this), 'false');
+		this.generateTemplateButton.addEventListener("click", this.generateTemplate.bind(this), 'false');
 
 		this.heightCanvas = this.canvas.height;
 		this.widthCanvas = this.canvas.width;
