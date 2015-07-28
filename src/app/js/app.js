@@ -19,12 +19,12 @@ CT = {
 	image: null,
 	typeImage: 'jpeg',
 	nameFolder: null,
-	numberImage: 0,
+	numberImage: 0, 
 
 	status: document.querySelector("#status"),
 	counterFlag: false,
 	overcanvas: document.getElementById('overcanvas'),
-	
+
 	setStatus: function (isError, message) {
 
 		this.status.style.display = "block";
@@ -77,8 +77,16 @@ CT = {
 		this.overcanvas.style.left = left + "px";
 	},
 
-	addFolderImages: function (e) {
+	updateProgressStatus: function(total, loaded) {
 
+        var percentLoaded = (loaded / total) * 100;
+
+        this.progressStatus.style.width = percentLoaded.toFixed(0) + "%";
+        this.progressStatus.innerHTML = percentLoaded.toFixed(0) + "%";
+	},
+
+	addFolderImages: function (e) {
+ 
 		var folder;
 
 		this.folderImages = e.target.files;
@@ -179,18 +187,26 @@ CT = {
 
         xhr.onreadystatechange = function () {
 		    if (xhr.readyState == 4 && xhr.status == 200) {
-		        if (this.folderImages.length > this.numberImage)
-		        {
+		        if (this.folderImages.length >= this.numberImage) {
+		        	
 		        	this.numberImage++;
+		        	this.updateProgressStatus(this.folderImages.length, this.numberImage);
 		        	this.generateTemplate();
-		        }
+		        } 
 		    }
 		}.bind(this);
 	},
 
 	generateTemplate: function () {	
 
-		this.image = CT.folderImages[this.numberImage];
+		this.progressStatus.style.display = "block";
+
+		if (typeof CT.folderImages[this.numberImage] != "undefined") {
+			this.image = CT.folderImages[this.numberImage];
+		} else {
+			this.setStatus(false, "Generowanie templejtów zostało zakończone.")
+		}
+		
 		this.addImageToCanvas(CT.saveTemplate, CT);
 	},
 
@@ -222,6 +238,8 @@ CT = {
 		this.heightCanvas = this.canvas.height;
 		this.widthCanvas = this.canvas.width;
 		this.overcanvas.style.top = -this.heightCanvas + "px";
+
+		this.progressStatus = document.querySelector('#progress-status');
 	}
 };
 
