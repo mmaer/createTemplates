@@ -19,7 +19,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_FILES)) {
                     $errors++;
                 }
             }
+
         }
+
     }
 
     if($errors > 0) {
