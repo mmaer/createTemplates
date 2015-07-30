@@ -4,8 +4,12 @@
 	<meta charset="UTF-8">
 	<title>createTemplates</title>
 	<link rel="stylesheet" type="text/css" href="app/css/bootstrap.min.css">
-	<script type="text/javascript" src="app/js/fabric.min.js"></script>
 	
+	<script type="text/javascript" src="app/js/jquery.min.js"></script>
+	<script type="text/javascript" src="app/js/fabric.min.js"></script>
+	<script type="text/javascript" src="app/js/bootstrap.min.js"></script>
+
+
 	<style type="text/css">
 		#createtemplate {
 			border: 1px solid black;
@@ -27,6 +31,21 @@
 
 		.progress-bar {
 			display: none;
+		}
+
+		.page-header {
+			margin: 0;
+			padding-bottom: 0;
+		}
+
+		h1 {
+			margin-top: 5px;
+			margin-bottom: 5px;
+		}
+
+		h2 {
+			margin-top: 5px;
+			margin-bottom: 5px;
 		}
 
 	</style>
@@ -55,88 +74,117 @@
 	</div>
 
 
-	<div class="row">
-		<h2>1. Wybierz szablon i folder z obrazkami</h2>
-		<div class="col-md-6">
-			<div class="form-group">
-			    <label for="exampleInputFile">*Wybiersz szablon</label>
-			    <input type="file" id="template-img">
-			    <p class="help-block">Wybiersz szablon na którym mają generować się obrazki</p>
+	<div class="rows">
+		 <!-- Nav tabs -->
+		<ul class="nav nav-tabs" role="tablist" id="steps-menu">
+			<li role="presentation" class="active"><a href="#stepone" aria-controls="home" role="tab" data-toggle="tab">1. Wybierz szablon i folder z obrazkami</a></li>
+			<li role="presentation"><a href="#steptwo" aria-controls="profile" role="tab" data-toggle="tab">2. Ustaw obszar wycinanych szablonów</a></li>
+			<li role="presentation"><a href="#stepthree" aria-controls="messages" role="tab" data-toggle="tab">3. Dodaj numeracje templejtów</a></li>
+		</ul>
+
+		<!-- Tab panes -->
+		<div class="tab-content">
+			<div role="tabpanel" class="tab-pane active" id="stepone">
+				
+				<div class="row">
+					<h2>1. Wybierz szablon i folder z obrazkami</h2>
+					<div class="col-md-6">
+						<div class="form-group">
+						    <label for="exampleInputFile">*Wybiersz szablon</label>
+						    <input type="file" id="template-img">
+						    <p class="help-block">Wybiersz szablon na którym mają generować się obrazki</p>
+						</div>
+					</div>
+					<div class="col-md-6">
+						<div class="form-group">
+						    <label for="exampleInputFile">*Wybiersz folder z obrazkami</label>
+						    <input type="file" id="upload-folder" name="my_file[]" webkitdirectory mozdirectory msdirectory odirectory directory multiple/>
+						    <p class="help-block">Podaj folder w którym znajdują się obrazki które zostaną wygenerowane</p>
+						</div>
+					</div>
+				</div>
+
+			</div>
+			<div role="tabpanel" class="tab-pane" id="steptwo">
+				
+				<div class="row">
+					<h2>2. Ustaw obszar wycinanych szablonów</h2>
+					<div class="col-md-6">
+						<div class="form-group">
+						    <label for="exampleInputEmail1">Podaj szerokość szablonu</label>
+						    <input type="number" class="form-control" id="template-width" min="1" placeholder="Podaj szerokość szablonu">
+						</div>
+
+						<div class="form-group">
+						    <label for="exampleInputEmail1">Podaj odległość od górnej krawędzi canvasu</label>
+						    <input type="number" class="form-control" id="template-margin-top" min="1" placeholder="Podaj odległość od górnej krawędzi canvasu">
+						</div>
+					</div>
+					<div class="col-md-6">
+						<div class="form-group">
+						    <label for="exampleInputEmail1">Podaj wysokość szablonu</label>
+						    <input type="number" class="form-control" id="template-height" min="1" placeholder="Podaj wysokość szablonu">
+						</div>
+
+						<div class="form-group">
+						    <label for="exampleInputEmail1">Podaj odległość od lewej krawędzi canvas</label>
+						    <input type="number" class="form-control" id="template-margin-left" min="1" placeholder="Podaj odległość od lewej krawędzi canvas">
+						</div>
+					</div>
+				</div>
+
+			</div>
+			<div role="tabpanel" class="tab-pane" id="stepthree">
+				
+				<div class="row">
+					<h2>3. Dodaj numeracje templejtów</h2>
+					<div class="col-md-12">
+						<div class="checkbox">
+							<label>
+								<input type="checkbox" id="add-circle" value="option1" aria-label="...">
+								Dodaj kółko
+							</label>
+						</div>
+					</div>
+					<div class="col-md-6">
+						<div class="form-group">
+						    <label for="exampleInputEmail1">Podaj od którego numeru ma rozpocząć się numerowanie templejtów</label>
+						    <input type="number" class="form-control" id="widthtemplate" min="1" placeholder="Podaj początkowy numer templejtu">
+						</div>
+
+						<div class="form-group">
+						    <label for="exampleInputEmail1">Podaj odległość od górnej krawędzi canvasu</label>
+						    <input type="number" class="form-control" id="circle-margin-top" min="1" placeholder="Podaj odległość od górnej krawędzi canvasu">
+						</div>
+
+						<div class="form-group">
+						    <label for="exampleInputEmail1">Wybiersz kolor koła</label>
+						    <input type="color" class="form-control" id="circle-fill" min="1" placeholder="Podaj odległość od górnej krawędzi canvasu">
+						</div>
+
+					</div>
+					<div class="col-md-6">
+						<div class="form-group">
+						    <label for="exampleInputEmail1">Podaj promień koła</label>
+						    <input type="number" class="form-control" id="circle-radius" min="1" placeholder="Podaj promień koła">
+						</div>
+
+						<div class="form-group">
+						    <label for="exampleInputEmail1">Podaj odległość od lewej krawędzi canvas</label>
+						    <input type="number" class="form-control" id="circle-margin-left" min="1" placeholder="Podaj odległość od lewej krawędzi canvas">
+						</div>
+					</div>
+				</div>
+
 			</div>
 		</div>
-		<div class="col-md-6">
-			<div class="form-group">
-			    <label for="exampleInputFile">*Wybiersz folder z obrazkami</label>
-			    <input type="file" id="upload-folder" name="my_file[]" webkitdirectory mozdirectory msdirectory odirectory directory multiple/>
-			    <p class="help-block">Podaj folder w którym znajdują się obrazki które zostaną wygenerowane</p>
-			</div>
-		</div>
+		
+
 	</div>
-	<div class="row">
-		<h2>2. Ustaw obszar wycinanych szablonów</h2>
-		<div class="col-md-6">
-			<div class="form-group">
-			    <label for="exampleInputEmail1">Podaj szerokość szablonu</label>
-			    <input type="number" class="form-control" id="template-width" min="1" placeholder="Podaj szerokość szablonu">
-			</div>
 
-			<div class="form-group">
-			    <label for="exampleInputEmail1">Podaj odległość od górnej krawędzi canvasu</label>
-			    <input type="number" class="form-control" id="template-margin-top" min="1" placeholder="Podaj odległość od górnej krawędzi canvasu">
-			</div>
-		</div>
-		<div class="col-md-6">
-			<div class="form-group">
-			    <label for="exampleInputEmail1">Podaj wysokość szablonu</label>
-			    <input type="number" class="form-control" id="template-height" min="1" placeholder="Podaj wysokość szablonu">
-			</div>
-
-			<div class="form-group">
-			    <label for="exampleInputEmail1">Podaj odległość od lewej krawędzi canvas</label>
-			    <input type="number" class="form-control" id="template-margin-left" min="1" placeholder="Podaj odległość od lewej krawędzi canvas">
-			</div>
-		</div>
-	</div>
-	<div class="row">
-		<h2>3. Dodaj numeracje templejtów</h2>
-		<div class="col-md-12">
-			<div class="checkbox">
-				<label>
-					<input type="checkbox" id="add-circle" value="option1" aria-label="...">
-					Dodaj kółko
-				</label>
-			</div>
-		</div>
-		<div class="col-md-6">
-			<div class="form-group">
-			    <label for="exampleInputEmail1">Podaj od którego numeru ma rozpocząć się numerowanie templejtów</label>
-			    <input type="number" class="form-control" id="widthtemplate" min="1" placeholder="Podaj początkowy numer templejtu">
-			</div>
-
-			<div class="form-group">
-			    <label for="exampleInputEmail1">Podaj odległość od górnej krawędzi canvasu</label>
-			    <input type="number" class="form-control" id="circle-margin-top" min="1" placeholder="Podaj odległość od górnej krawędzi canvasu">
-			</div>
-
-			<div class="form-group">
-			    <label for="exampleInputEmail1">Wybiersz kolor koła</label>
-			    <input type="color" class="form-control" id="circle-fill" min="1" placeholder="Podaj odległość od górnej krawędzi canvasu">
-			</div>
-
-		</div>
-		<div class="col-md-6">
-			<div class="form-group">
-			    <label for="exampleInputEmail1">Podaj promień koła</label>
-			    <input type="number" class="form-control" id="circle-radius" min="1" placeholder="Podaj promień koła">
-			</div>
-
-			<div class="form-group">
-			    <label for="exampleInputEmail1">Podaj odległość od lewej krawędzi canvas</label>
-			    <input type="number" class="form-control" id="circle-margin-left" min="1" placeholder="Podaj odległość od lewej krawędzi canvas">
-			</div>
-		</div>
-
-	</div>
+	
+	
+	
 
 
 

@@ -5,14 +5,15 @@ var CT = CT || {};
 CT = {
 
 	/*** CANVAS ***/
-	canvas: new fabric.Canvas('createtemplate'),
-	startNumber: 0,
-	canvasHeight: 0,
-	canvasWidth: 0,
-	templateHeight: 0,
-	templateWidth: 0,
-	templateMarginTop: 0,
-	templateMarginLeft: 0,
+	template: {
+		canvas: new fabric.Canvas('createtemplate'),
+		canvasHeight: 0,
+		canvasWidth: 0,
+		height: 0,
+		width: 0,
+		marginTop: 0,
+		marginLeft: 0
+	},
 
 	/*** CIRCLE ***/
 	circleRadius: 50,
@@ -44,17 +45,12 @@ CT = {
         }
 	},
 
-	/*setCounter: function (startNumber) {
-
-	},*/
-
 	/***** SET WIDTH, HEIGHT, TOP AND LEFT *****/
-
 	setTemplateHeight: function (heightTemplate) {
 
 		var height = parseInt(heightTemplate.value, 10);
 
-		this.templateHeight = height;
+		this.template.height = height;
 
 		if (!this.checkSizeTemplate()) {
 			return this.setStatus(true, "Wysokość szablonu jest za wysoka");
@@ -70,7 +66,7 @@ CT = {
 
 		var width = parseInt(widthTemplate.value, 10);
 		
-		this.templateWidth = width;
+		this.template.width = width;
 
 		if (!this.checkSizeTemplate()) {
 			return this.setStatus(true, "Szerokość szablonu jest za wysoka");
@@ -84,9 +80,9 @@ CT = {
 	setTemplateMarginTop: function (marginTop) {
 
 		var top = parseInt(marginTop.value, 10),
-			margin = -this.canvasHeight + top;
+			margin = -this.template.canvasHeight + top;
 
-		this.templateMarginTop = top;
+		this.template.marginTop = top;
 
 		if (!this.checkSizeTemplate()) {
 			return this.setStatus(true, "Górny marginesu jest za duży");
@@ -101,7 +97,7 @@ CT = {
 
 		var left = parseInt(marginLeft.value, 10);
 
-		this.templateMarginLeft = left; 
+		this.template.marginLeft = left; 
 
 		if (!this.checkSizeTemplate()) {
 			return this.setStatus(true, "Lewy margines jest za duży");
@@ -160,16 +156,16 @@ CT = {
 
 	checkSizeTemplate: function() {
 
-		var hTemplateMarginTop = this.templateHeight + this.templateMarginTop,
-			wTemplateMarginLeft = this.templateWidth + this.templateMarginLeft;
+		var hTemplateMarginTop = this.template.height + this.template.marginTop,
+			wTemplateMarginLeft = this.template.width + this.template.marginLeft;
 
-		if (hTemplateMarginTop > this.canvasHeight) {
+		if (hTemplateMarginTop > this.template.canvasHeight) {
 			this.generateTemplateButton.onclick = null;
         	this.generateTemplateButton.setAttribute("disabled", "disabled");
 			return false;
 		}
 
-		if (wTemplateMarginLeft > this.canvasWidth) {
+		if (wTemplateMarginLeft > this.template.canvasWidth) {
 			this.generateTemplateButton.onclick = null;
         	this.generateTemplateButton.setAttribute("disabled", "disabled");
 			return false;
@@ -206,10 +202,10 @@ CT = {
             imgObj.onload = function () {
 
                 image = new fabric.Image(imgObj);
-                CT.canvas.setWidth(image.width);
-    			CT.canvas.setHeight(image.height);
-                CT.canvas.add(image);
-                CT.canvas.renderAll.bind(CT.canvas);
+                CT.template.canvas.setWidth(image.width);
+    			CT.template.canvas.setHeight(image.height);
+                CT.template.canvas.add(image);
+                CT.template.canvas.renderAll.bind(CT.template.canvas);
             };
         };
 
@@ -228,10 +224,10 @@ CT = {
 
 				var image = new fabric.Image(imgObj);
 				image.set({
-					left: this.templateMarginLeft,
-					top: this.templateMarginTop,
-					height: this.templateHeight,
-					width: this.templateWidth
+					left: this.template.marginLeft,
+					top: this.template.marginTop,
+					height: this.template.height,
+					width: this.template.width
 				});
 
 				if (this.canvas.add(image)) {
@@ -257,10 +253,10 @@ CT = {
 			multiplier: 1,
 			quality: 1,
 			format: this.imageType,
-			left: this.templateMarginLeft,
-			top: this.templateMarginTop,
-			height: this.templateHeight,
-			width: this.templateWidth
+			left: this.template.marginLeft,
+			top: this.template.marginTop,
+			height: this.template.height,
+			width: this.template.width
 		});
 
 		image.append("image", template);
@@ -303,7 +299,7 @@ CT = {
 		if (typeof this.imagesFolder[this.imageNumber] != "undefined") {
 			this.image = this.imagesFolder[this.imageNumber];
 		} else {
-			this.setStatus(false, "Generowanie templejtów zostało zakończone.")
+			this.setStatus(false, "Generowanie templejtów zostało zakończone.");
 		}
 		
 		this.addImageToCanvas(CT.saveTemplate, CT);
@@ -354,8 +350,6 @@ CT = {
 		var circleMarginLeft = document.querySelector("#circle-margin-left");
 		var circleFill = document.querySelector("#circle-fill");
 
-		this.generateTemplateButton = document.querySelector("#generatetemplate");
-
 		//counterNumber.addEventListener("change", CT.setCounter, 'false');
 		templateImg.addEventListener("change", CT.addTemplateImage, 'false');
 		uploadFolder.addEventListener("change", function () { CT.addImagesFolder(event); }, 'false');
@@ -374,11 +368,12 @@ CT = {
 
 		this.generateTemplateButton.addEventListener("click", this.generateTemplate.bind(this), 'false');
 
-		this.canvasHeight = this.canvas.height;
-		this.canvasWidth = this.canvas.width;
-		this.overcanvas.style.top = -this.canvasHeight + "px";
+		this.template.canvasHeight = this.canvas.height;
+		this.template.canvasWidth = this.canvas.width;
+		this.overcanvas.style.top = -this.template.canvasHeight + "px";
 
 		this.progressStatus = document.querySelector('#progress-status');
+		this.generateTemplateButton = document.querySelector("#generatetemplate");
 	}
 };
 
