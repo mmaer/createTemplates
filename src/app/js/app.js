@@ -17,7 +17,7 @@ CT = {
 
 	/*** CIRCLE ***/
 	circleRadius: 50,
-	circleFill: 'rgba(0, 0, 0, 1)',
+	circleFill: 'red',
 	circleMarginTop: 0,
 	circleMarginLeft: 0,
 	
@@ -27,7 +27,7 @@ CT = {
 	imageType: 'jpeg',
 	imageNumber: 0, 
 	folderName: null,
-	
+	textNumber: '1',
 
 	status: document.querySelector("#status"),
 	counterFlag: false,
@@ -116,7 +116,11 @@ CT = {
 		this.circle.radius = this.circleRadius;
 		this.circle.height = radius * 2;
 		this.circle.width = radius * 2;
-		this.canvas.renderAll();
+
+		this.text.left = this.circle.radius - (this.text.width/2);
+		this.text.top = this.circle.radius - (this.text.height/2);
+
+		this.template.canvas.renderAll();
 	},
 
 	setCircleMarginTop: function (marginTopCircle) {
@@ -125,7 +129,10 @@ CT = {
 
 		this.circleMarginTop = marginTop;
 		this.circle.top = this.circleMarginTop;
-		this.canvas.renderAll();
+
+		this.text.top = this.circle.top + this.circle.radius - (this.text.height/2);
+
+		this.template.canvas.renderAll();
 	},
 
 	setCircleMarginLeft: function (marginLeftCircle) {
@@ -134,7 +141,10 @@ CT = {
 
 		this.circleMarginLeft = marginLeft;
 		this.circle.left = this.circleMarginLeft;
-		this.canvas.renderAll();
+
+		this.text.left = this.circle.left + this.circle.radius - (this.text.width/2);
+
+		this.template.canvas.renderAll();
 	},
 
 	setCircleFill: function (fillCircle) {
@@ -143,7 +153,28 @@ CT = {
 
 		this.circleFill = fill;
 		this.circle.fill = this.circleFill;
-		this.canvas.renderAll();
+		this.template.canvas.renderAll();
+	},
+
+	setTextFill: function (fillText) {
+
+		var fill = fillText.value;
+
+		this.textFill = fill;
+		this.text.fill = this.textFill;
+		this.template.canvas.renderAll();
+	},
+
+	setTextNumber: function (numberText) {
+		var number = String(parseInt(numberText.value, 10));
+
+		this.text.text = number;
+		this.textNumber = number;
+		this.template.canvas.renderAll();
+
+		this.text.left = this.circle.left + this.circle.radius - (this.text.width/2);
+		this.text.top = this.circle.top + this.circle.radius - (this.text.height/2);
+		this.template.canvas.renderAll();
 	},
 
 	updateProgressStatus: function(total, loaded) {
@@ -316,18 +347,26 @@ CT = {
         		fill: this.circleFill
         	});
 
-			this.canvas.add(this.circle);
+			this.template.canvas.add(this.circle);
 		} else {
-			this.canvas.remove(this.circle);
+			this.template.canvas.remove(this.circle);
 		}
 	},
 
 	addTextToCanvas: function (e) {
 
 		if (e.target.checked) { 
-			//CT.text = new fabric.IText(1);
+			this.text = new fabric.IText(this.textNumber, {
+				fontFamily: 'helvetica',
+				fontWeight: 'bold',
+				fontSize: 28,
+				fill: 'black',
+			});
 
-			this.canvas.add(new fabric.IText(1));
+			this.template.canvas.add(this.text);
+			this.text.left = this.circle.radius - (this.text.width/2);
+			this.text.top = this.circle.radius - (this.text.height/2);
+			this.template.canvas.renderAll();
 		} else {
 			this.canvas.remove(this.text);
 		}
@@ -350,6 +389,9 @@ CT = {
 		var circleMarginLeft = document.querySelector("#circle-margin-left");
 		var circleFill = document.querySelector("#circle-fill");
 
+		var textFill = document.querySelector("#text-fill");
+		var textNumber = document.querySelector("#text-number");
+
 		//counterNumber.addEventListener("change", CT.setCounter, 'false');
 		templateImg.addEventListener("change", CT.addTemplateImage, 'false');
 		uploadFolder.addEventListener("change", function () { CT.addImagesFolder(event); }, 'false');
@@ -366,14 +408,16 @@ CT = {
 		circleMarginLeft.addEventListener("change", function () { CT.setCircleMarginLeft(circleMarginLeft); }, 'false');
 		circleFill.addEventListener("change", function () { CT.setCircleFill(circleFill); }, 'false');
 
-		this.generateTemplateButton.addEventListener("click", this.generateTemplate.bind(this), 'false');
+		textFill.addEventListener("change", function () { CT.setTextFill(textFill); }, 'false');
+		textNumber.addEventListener("change", function () { CT.setTextNumber(textNumber); }, 'false');
 
-		this.template.canvasHeight = this.canvas.height;
-		this.template.canvasWidth = this.canvas.width;
+		this.template.canvasHeight = this.template.canvas.height;
+		this.template.canvasWidth = this.template.canvas.width;
 		this.overcanvas.style.top = -this.template.canvasHeight + "px";
 
 		this.progressStatus = document.querySelector('#progress-status');
 		this.generateTemplateButton = document.querySelector("#generatetemplate");
+		this.generateTemplateButton.addEventListener("click", this.generateTemplate.bind(this), 'false');
 	}
 };
 
