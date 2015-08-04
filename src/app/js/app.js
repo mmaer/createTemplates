@@ -47,7 +47,7 @@ CT = {
 	/***** SET WIDTH, HEIGHT, TOP AND LEFT *****/
 	setTemplateHeight: function (heightTemplate) {
 
-		var height = parseInt(heightTemplate.value, 10);
+		var height = Number(heightTemplate.value);
 
 		this.template.height = height;
 
@@ -63,7 +63,7 @@ CT = {
 
 	setTemplateWidth: function (widthTemplate) {
 
-		var width = parseInt(widthTemplate.value, 10);
+		var width = Number(widthTemplate.value);
 		
 		this.template.width = width;
 
@@ -78,7 +78,7 @@ CT = {
 
 	setTemplateMarginTop: function (marginTop) {
 
-		var top = parseInt(marginTop.value, 10),
+		var top = Number(marginTop.value),
 			margin = -this.template.canvasHeight + top;
 
 		this.template.marginTop = top;
@@ -94,7 +94,7 @@ CT = {
 
 	setTemplateMarginLeft: function (marginLeft) {
 
-		var left = parseInt(marginLeft.value, 10);
+		var left = Number(marginLeft.value);
 
 		this.template.marginLeft = left; 
 
@@ -109,7 +109,7 @@ CT = {
 
 	setCircleRadius: function (circleRadius) {
 
-		var radius = parseInt(circleRadius.value, 10);
+		var radius = Number(circleRadius.value);
 
 		this.circleRadius = radius;
 		this.circle.radius = this.circleRadius;
@@ -124,7 +124,7 @@ CT = {
 
 	setCircleMarginTop: function (marginTopCircle) {
 
-		var marginTop = parseInt(marginTopCircle.value, 10);
+		var marginTop = Number(marginTopCircle.value);
 
 		this.circleMarginTop = marginTop;
 		this.circle.top = this.circleMarginTop;
@@ -136,7 +136,7 @@ CT = {
 
 	setCircleMarginLeft: function (marginLeftCircle) {
 
-		var marginLeft = parseInt(marginLeftCircle.value, 10);
+		var marginLeft = Number(marginLeftCircle.value);
 
 		this.circleMarginLeft = marginLeft;
 		this.circle.left = this.circleMarginLeft;
@@ -167,9 +167,9 @@ CT = {
 	setTextNumber: function (numberText) {
 
 		if (typeof numberText.value != 'undefined') {
-			var number = String(parseInt(numberText.value, 10));
+			var number = String(Number(numberText.value));
 		} else {
-			var number = String(parseInt(numberText, 10));
+			var number = String(Number(numberText));
 		}
 
 		this.text.text = number;
@@ -316,7 +316,7 @@ CT = {
 		    if (xhr.readyState == 4 && xhr.status == 200) {
 		        if (this.imagesFolder.length >= this.imageNumber) {
 		        	
-		        	this.setTextNumber(parseInt(this.text.text) + 1);
+		        	this.setTextNumber(Number(this.text.text) + 1);
 		        	this.imageNumber++;
 		        	this.updateProgressStatus(this.imagesFolder.length, this.imageNumber);
 		        	this.generateTemplate();
