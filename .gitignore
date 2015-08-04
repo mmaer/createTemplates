@@ -1,0 +1,2 @@
+# ignoruj wszystkie pliki znajdujące się w katalogu build/
+src/app/templates
