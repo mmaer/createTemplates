@@ -166,7 +166,12 @@ CT = {
 	},
 
 	setTextNumber: function (numberText) {
-		var number = String(parseInt(numberText.value, 10));
+
+		if (typeof numberText.value != 'undefined') {
+			var number = String(parseInt(numberText.value, 10));
+		} else {
+			var number = String(parseInt(numberText, 10));
+		}
 
 		this.text.text = number;
 		this.textNumber = number;
@@ -219,13 +224,8 @@ CT = {
 	addTemplateImage: function (e) {
 
 		var reader = new FileReader(),
-			percentComplete,
 			imgObj,
 			image;
-
-		reader.onprogress = function (evt) {
-            percentComplete = (evt.loaded / evt.total) * 100;
-        };
 
         reader.onload = function (event) {
             imgObj = new Image();
@@ -236,6 +236,9 @@ CT = {
                 CT.template.canvas.setWidth(image.width);
     			CT.template.canvas.setHeight(image.height);
                 CT.template.canvas.add(image);
+                CT.template.canvasHeight = CT.template.canvas.height;
+				CT.template.canvasWidth = CT.template.canvas.width;
+				CT.overcanvas.style.top = -CT.template.canvasHeight + "px";
                 CT.template.canvas.renderAll.bind(CT.template.canvas);
             };
         };
@@ -261,7 +264,10 @@ CT = {
 					width: this.template.width
 				});
 
-				if (this.canvas.add(image)) {
+				if (this.template.canvas.add(image)) {
+
+					this.template.canvas.bringToFront(this.circle);
+					this.template.canvas.bringToFront(this.text); 
 					callback.call(obj, null);
 				}
 
@@ -278,9 +284,9 @@ CT = {
 			template,
 			xhr;
 
-		this.canvas.deactivateAll().renderAll();
+		this.template.canvas.deactivateAll().renderAll();
 
-		template = this.canvas.toDataURL ({
+		template = this.template.canvas.toDataURL ({
 			multiplier: 1,
 			quality: 1,
 			format: this.imageType,
@@ -311,6 +317,7 @@ CT = {
 		    if (xhr.readyState == 4 && xhr.status == 200) {
 		        if (this.imagesFolder.length >= this.imageNumber) {
 		        	
+		        	this.setTextNumber(parseInt(this.text.text) + 1);
 		        	this.imageNumber++;
 		        	this.updateProgressStatus(this.imagesFolder.length, this.imageNumber);
 		        	this.generateTemplate();
@@ -338,7 +345,6 @@ CT = {
 
 	addCircleToCanvas: function (e) {
 		
-		//this.addTextToCanvas(e);
 		if (e.target.checked) { 
 			this.circle = new fabric.Circle({ 
         		top: this.circleMarginTop, 
@@ -374,7 +380,6 @@ CT = {
 
 	init: function () {
 
-		//var counterNumber = document.querySelector("#counternumber");
 		var templateImg = document.querySelector("#template-img");
 		var uploadFolder = document.querySelector("#upload-folder");
 		var templateHeight = document.querySelector("#template-height");
@@ -392,7 +397,6 @@ CT = {
 		var textFill = document.querySelector("#text-fill");
 		var textNumber = document.querySelector("#text-number");
 
-		//counterNumber.addEventListener("change", CT.setCounter, 'false');
 		templateImg.addEventListener("change", CT.addTemplateImage, 'false');
 		uploadFolder.addEventListener("change", function () { CT.addImagesFolder(event); }, 'false');
 
