@@ -4,8 +4,12 @@
 	<meta charset="UTF-8">
 	<title>createTemplates</title>
 	<link rel="stylesheet" type="text/css" href="app/css/bootstrap.min.css">
-	<script type="text/javascript" src="app/js/fabric.min.js"></script>
 	
+	<script type="text/javascript" src="app/js/jquery.min.js"></script>
+	<script type="text/javascript" src="app/js/fabric.min.js"></script>
+	<script type="text/javascript" src="app/js/bootstrap.min.js"></script>
+
+
 	<style type="text/css">
 		#createtemplate {
 			border: 1px solid black;
@@ -29,6 +33,21 @@
 			display: none;
 		}
 
+		.page-header {
+			margin: 0;
+			padding-bottom: 0;
+		}
+
+		h1 {
+			margin-top: 5px;
+			margin-bottom: 5px;
+		}
+
+		h2 {
+			margin-top: 5px;
+			margin-bottom: 5px;
+		}
+
 	</style>
 
 </head>
@@ -42,7 +61,7 @@
 		</div>
 		<ul class="nav navbar-nav navbar-right">
 			<li><a href="index.html">Generuj Templejt</a></li>
-			<li><a href="yourtemplates.html">Twoje Templejty</a></li>
+			<!-- <li><a href="yourtemplates.html">Twoje Templejty</a></li> -->
 		</ul>
 	</div>
 </nav>	
@@ -51,57 +70,120 @@
 <div class="container cont-setting">
 
 	<div class="page-header">
-		<h1>Ustawienia canvas <small>opcje zaznaczone gwiazdką są wymagane</small></h1>
+		<h1>Canvas setting <small>options marked with an asterisk are required</small></h1>
 	</div>
 
-	<div class="row">
-		<div class="col-md-3">
-			 <div class="form-group">
-			    <label for="exampleInputFile">*Wybiersz folder z obrazkami</label>
-			    <input type="file" id="folderupload" name="my_file[]" webkitdirectory mozdirectory msdirectory odirectory directory multiple/>
-			    <p class="help-block">Podaj folder w którym znajdują się obrazki które zostaną wygenerowane</p>
-			</div>
-		
-			<div class="form-group">
-			    <label for="exampleInputEmail1">Podaj wysokość szablonu</label>
-			    <input type="number" class="form-control" id="heighttemplate" min="1" placeholder="Podaj wysokość szablonu">
-			</div> 
-		</div>
-		<div class="col-md-3">
-			<div class="form-group">
-			    <label for="exampleInputFile">*Wybiersz szablon</label>
-			    <input type="file" id="filetemplate">
-			    <p class="help-block">Wybiersz szablon na którym mają generować się obrazki</p>
-			</div>
 
-			<div class="form-group">
-			    <label for="exampleInputEmail1">Podaj odległość od górnej krawędzi canvasu</label>
-			    <input type="number" class="form-control" id="margintop" min="1" placeholder="Podaj odległość od górnej krawędzi canvasu">
-			</div>
-		</div>
-		<div class="col-md-3">
-			<div class="form-group">
-			    <label for="exampleInputEmail1">Licznik numerowania</label>
-			    <div class="input-group">
-					<span class="input-group-addon">
-						<input type="checkbox" aria-label="countnumber">
-					</span>
-					<input type="number" id="counternumber" class="form-control" aria-label="countnumber" placeholder="Podaj liczbę od której ma zacząć numerować szablony">
+	<div class="rows">
+		 <!-- Nav tabs -->
+		<ul class="nav nav-tabs" role="tablist" id="steps-menu">
+			<li role="presentation" class="active"><a href="#stepone" aria-controls="home" role="tab" data-toggle="tab">1. Wybierz szablon i folder z obrazkami</a></li>
+			<li role="presentation"><a href="#steptwo" aria-controls="profile" role="tab" data-toggle="tab">2. Ustaw obszar wycinanych szablonów</a></li>
+			<li role="presentation"><a href="#stepthree" aria-controls="messages" role="tab" data-toggle="tab">3. Dodaj numeracje templejtów</a></li>
+		</ul>
+
+		<!-- Tab panes -->
+		<div class="tab-content">
+			<div role="tabpanel" class="tab-pane active" id="stepone">
+				
+				<div class="row">
+					<h2>1. Choose a template and a folder with pictures</h2>
+					<div class="col-md-6">
+						<div class="form-group">
+						    <label for="exampleInputFile">*Choose template</label>
+						    <input type="file" id="template-img">
+						    <p class="help-block">Select a template on which to generate a pictures</p>
+						</div>
+					</div>
+					<div class="col-md-6">
+						<div class="form-group">
+						    <label for="exampleInputFile">*Select the folder with images</label>
+						    <input type="file" id="upload-folder" name="my_file[]" webkitdirectory mozdirectory msdirectory odirectory directory multiple/>
+						    <p class="help-block">Give the folder that contains the images that will be generated</p>
+						</div>
+					</div>
 				</div>
-			</div>
 
-			<div class="form-group">
-			    <label for="exampleInputEmail1">Podaj odległość od lewej krawędzi canvas</label>
-			    <input type="number" class="form-control" id="marginleft" min="1" placeholder="Podaj odległość od lewej krawędzi canvas">
 			</div>
-		</div>
-		<div class="col-md-3">
-			<div class="form-group">
-			    <label for="exampleInputEmail1">Podaj szerokość szablonu</label>
-			    <input type="number" class="form-control" id="widthtemplate" min="1" placeholder="Podaj szerokość szablonu">
+			<div role="tabpanel" class="tab-pane" id="steptwo">
+				
+				<div class="row">
+					<h2>2. Set the area cut stencils</h2>
+					<div class="col-md-6">
+						<div class="form-group">
+						    <label for="exampleInputEmail1">Enter the width template</label>
+						    <input type="number" class="form-control" id="template-width" min="1" placeholder="Podaj szerokość szablonu">
+						</div>
+
+						<div class="form-group">
+						    <label for="exampleInputEmail1">Enter the distance from the top edge of the canvasu</label>
+						    <input type="number" class="form-control" id="template-margin-top" min="1" placeholder="Podaj odległość od górnej krawędzi canvasu">
+						</div>
+					</div>
+					<div class="col-md-6">
+						<div class="form-group">
+						    <label for="exampleInputEmail1">Enter the height template</label>
+						    <input type="number" class="form-control" id="template-height" min="1" placeholder="Podaj wysokość szablonu">
+						</div>
+
+						<div class="form-group">
+						    <label for="exampleInputEmail1">Enter the distance from the left edge of the canvasu</label>
+						    <input type="number" class="form-control" id="template-margin-left" min="1" placeholder="Podaj odległość od lewej krawędzi canvas">
+						</div>
+					</div>
+				</div>
+
+			</div>
+			<div role="tabpanel" class="tab-pane" id="stepthree">
+				
+				<div class="row">
+					<h2>3. Add numbered templates</h2>
+					<div class="col-md-12">
+						<div class="checkbox">
+							<label>
+								<input type="checkbox" id="add-circle" value="option1" aria-label="...">
+								Add circle
+							</label>
+						</div>
+					</div>
+					<div class="col-md-6">
+						<div class="form-group">
+						    <label for="exampleInputEmail1">Enter the number from which you want to start numbering templates</label>
+						    <input type="number" class="form-control" id="text-number" min="1" placeholder="Podaj początkowy numer templejtu">
+						</div>
+
+						<div class="form-group">
+						    <label for="exampleInputEmail1">Enter the distance from the top edge of the canvasu</label>
+						    <input type="number" class="form-control" id="circle-margin-top" min="1" placeholder="Podaj odległość od górnej krawędzi canvasu">
+						</div>
+
+						<div class="form-group">
+						    <label for="exampleInputEmail1">Choose a color circle</label>
+						    <input type="color" class="form-control" id="circle-fill" min="1" placeholder="Podaj odległość od górnej krawędzi canvasu">
+						</div>
+
+					</div>
+					<div class="col-md-6">
+						<div class="form-group">
+						    <label for="exampleInputEmail1">Enter the radius of the circle</label>
+						    <input type="number" class="form-control" id="circle-radius" min="1" placeholder="Podaj promień koła">
+						</div>
+
+						<div class="form-group">
+						    <label for="exampleInputEmail1">Enter the distance from the left edge of the canvas</label>
+						    <input type="number" class="form-control" id="circle-margin-left" min="1" placeholder="Podaj odległość od lewej krawędzi canvas">
+						</div>
+						<div class="form-group">
+						    <label for="exampleInputEmail1">Choose a color textu</label>
+						    <input type="color" class="form-control" id="text-fill" min="1" placeholder="Podaj odległość od górnej krawędzi canvasu">
+						</div>
+					</div>
+				</div>
+
 			</div>
 		</div>
 	</div>
+
 	<div class="row">
 		<div class="alert" id="status"></div>
 	</div>
@@ -116,7 +198,7 @@
 	<div class="row">
 		<div class="col-md-12">
 			<div class="center-block">
-				<button type="button" class="btn btn-success" id="generatetemplate">Generuj templaty</button>
+				<button type="button" class="btn btn-success" id="generatetemplate">Generate templates</button>
 			</div>
 		</div>
 	</div>

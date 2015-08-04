@@ -30,7 +30,6 @@ CT = {
 	textNumber: '1',
 
 	status: document.querySelector("#status"),
-	counterFlag: false,
 	overcanvas: document.getElementById('overcanvas'),
 
 	setStatus: function (isError, message) {
@@ -53,7 +52,7 @@ CT = {
 		this.template.height = height;
 
 		if (!this.checkSizeTemplate()) {
-			return this.setStatus(true, "Wysokość szablonu jest za wysoka");
+			return this.setStatus(true, "The height of the template is too big");
 		} else {
 			this.status.style.display = "none";
 		}
@@ -69,7 +68,7 @@ CT = {
 		this.template.width = width;
 
 		if (!this.checkSizeTemplate()) {
-			return this.setStatus(true, "Szerokość szablonu jest za wysoka");
+			return this.setStatus(true, "The width of the template is too big");
 		} else {
 			this.status.style.display = "none";
 		}
@@ -85,7 +84,7 @@ CT = {
 		this.template.marginTop = top;
 
 		if (!this.checkSizeTemplate()) {
-			return this.setStatus(true, "Górny marginesu jest za duży");
+			return this.setStatus(true, "The top margin is too big");
 		} else {
 			this.status.style.display = "none";
 		}
@@ -100,7 +99,7 @@ CT = {
 		this.template.marginLeft = left; 
 
 		if (!this.checkSizeTemplate()) {
-			return this.setStatus(true, "Lewy margines jest za duży");
+			return this.setStatus(true, "The left margin is too big");
 		} else {
 			this.status.style.display = "none";
 		}
@@ -307,7 +306,7 @@ CT = {
         xhr.onload = function (e) {
 
             if (e.target.status != 200) {
-                this.setStatus(true, "Wystąpił błąd!");
+                this.setStatus(true, "An error occurred!");
             }
         };
 
@@ -337,7 +336,7 @@ CT = {
 		if (typeof this.imagesFolder[this.imageNumber] != "undefined") {
 			this.image = this.imagesFolder[this.imageNumber];
 		} else {
-			this.setStatus(false, "Generowanie templejtów zostało zakończone.");
+			this.setStatus(false, "Generating templates has been completed.");
 		}
 		
 		this.addImageToCanvas(CT.saveTemplate, CT);
